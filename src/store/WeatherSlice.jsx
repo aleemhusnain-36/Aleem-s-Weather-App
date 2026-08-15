@@ -8,11 +8,9 @@ export const fetchWeather = createAsyncThunk(
             const apiKey = 'd9f0f3af1ed0feeb0e8973a4c525cedf';
             const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`);
             const data = await response.data;
-            console.log('Fetched weather data:', data);
 
             const response2 = await axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&units=metric&appid=${apiKey}`);
             const data2 = await response2.data;
-            console.log('Fetched forecast data:', data2);
             return { data, data2 };
         } catch (error) {
             console.error('Error fetching weather data:', error);
@@ -41,11 +39,11 @@ const weatherSlice = createSlice({
         builder.addCase(fetchWeather.fulfilled, (state, action) => {
             const payload = action.payload ?? {};
             const weatherPayload = payload?.data || payload;
-            const forecastList = payload?.data2?.list || [];
+            const forecastList = payload?.data2?.list ?? [];
 
             state.loading = false;
             state.weather = weatherPayload && typeof weatherPayload === 'object' ? weatherPayload : null;
-            state.hourlyCast = Array.isArray(forecastList) ? forecastList : [];
+            state.hourlyCast = Array.isArray(forecastList) ? forecastList.slice(0, 8) : [];
             state.foreCast = Array.isArray(forecastList) ? forecastList : [];
             state.error = null;
         });

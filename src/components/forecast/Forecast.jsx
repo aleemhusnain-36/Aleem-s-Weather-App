@@ -10,35 +10,39 @@ const Forecast = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-  const arryOfDays = [];
+
+  const dayMap = {};
   foreCast?.forEach((item) => {
     const date = new Date(item.dt * 1000);
     const dayKey = date.toLocaleDateString('en-US');
-    if (!arryOfDays[dayKey]) {
-      arryOfDays[dayKey] = []
+    if (!dayMap[dayKey]) {
+      dayMap[dayKey] = [];
     }
-    arryOfDays[dayKey].push(item);
+    dayMap[dayKey].push(item);
   });
-  const days = Object.entries(arryOfDays);
+
+  const days = Object.entries(dayMap)
+    .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime());
 
   return (
     <div className='forecast'>
       <div className="forecast-card">
         <h2>Forecast Day</h2>
         <div className="forecast-list">
-          {days.map(([date, dayItems]) => {
-            const temperature = dayItems.map((item) => item.main.temp);
-            const minTemp = Math.min(...temperature);
-            const maxTemp = Math.max(...temperature);
+          {days.map(([dateKey, dayItems]) => {
+            const temperatures = dayItems.map((item) => item.main.temp);
+            const minTemp = Math.min(...temperatures);
+            const maxTemp = Math.max(...temperatures);
 
             const middayitem = dayItems.find((item) => {
               const hour = new Date(item.dt * 1000).getHours();
               return hour >= 12 && hour <= 15;
             }) || dayItems[0];
 
-            const dayName = new Date(dayItems[0].dt * 1000).toLocaleDateString('en-US', { weekday: 'short' });
+            const dayName = new Date(dateKey).toLocaleDateString('en-US', { weekday: 'short' });
+
             return (
-              <div className='forecast-item' key={date}>
+              <div className='forecast-item' key={dateKey}>
                 <p>{dayName}</p>
                 <img src={`http://openweathermap.org/img/wn/${middayitem?.weather[0]?.icon}.png`} alt="weather" />
                 <h3>
