@@ -17,7 +17,7 @@ const HourlyCast = () => {
       <div className="hourlycast-card">
         <div className="hourlycast-list">
           <h2>Hourly Forecast</h2>
-          {hourlyCast?.slice(0, 8).map((hour) => {
+          {hourlyCast?.slice(0, 5).map((hour) => {
             const date = new Date(hour.dt * 1000);
             const time = date.toLocaleTimeString([], {
               hour: '2-digit',

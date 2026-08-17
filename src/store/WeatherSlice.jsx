@@ -39,11 +39,11 @@ const weatherSlice = createSlice({
         builder.addCase(fetchWeather.fulfilled, (state, action) => {
             const payload = action.payload ?? {};
             const weatherPayload = payload?.data || payload;
-            const forecastList = payload?.data2?.list ?? [];
+            const forecastList = payload?.data2?.list || [];
 
             state.loading = false;
             state.weather = weatherPayload && typeof weatherPayload === 'object' ? weatherPayload : null;
-            state.hourlyCast = Array.isArray(forecastList) ? forecastList.slice(0, 8) : [];
+            state.hourlyCast = Array.isArray(forecastList) ? forecastList.slice(0, 5) : [];
             state.foreCast = Array.isArray(forecastList) ? forecastList : [];
             state.error = null;
         });
