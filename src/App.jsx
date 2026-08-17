@@ -14,7 +14,7 @@ function App() {
         <div className='container'>
           <div className='row'>
             <div className="col-lg-6 col-md-12 col-sm-12 ">
-              <h1 className='heading mb-5'> <img src={Cloudy} alt="Cloudy" className='cloudy-img' />Weather App</h1>
+              <h1 className='heading mb-5'> <img src={Cloudy} alt="Cloudy" className='cloudy-img mb-3' />Weather App</h1>
             </div>
             <div className="col-lg-6 col-md-12 col-sm-12 ">
               <Search />
@@ -35,6 +35,10 @@ function App() {
           </div>
         </div>
       </div>
+
+      <footer className="app-footer">
+        <p>© 2026 Aleem.dev</p>
+      </footer>
     </div>
   )
 }
